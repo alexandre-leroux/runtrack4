@@ -1,0 +1,58 @@
+Sub Create_Tables()
+
+DoCmd.RunSQL "CREATE TABLE personnel(" & _
+   "Id_personnel COUNTER," & _
+   "fk_id_categorie_professionnelle INT NOT NULL," & _
+   "nom VARCHAR(56)," & _
+   "prénom VARCHAR(50)," & _
+   "biographie TEXT," & _
+   "photo VARCHAR(255)," & _
+   "PRIMARY KEY(Id_personnel)" & _
+");"   
+
+DoCmd.RunSQL "CREATE TABLE news(" & _
+   "Id_news COUNTER," & _
+   "titre VARCHAR(255)," & _
+   "article TEXT," & _
+   "Id_personnel INT NOT NULL," & _
+   "PRIMARY KEY(Id_news)," & _
+   "FOREIGN KEY(Id_personnel) REFERENCES personnel(Id_personnel)" & _
+");"   
+
+DoCmd.RunSQL "CREATE TABLE messages_privés(" & _
+   "Id_messages_privés COUNTER," & _
+   "fk_id_personnel_1 INT NOT NULL," & _
+   "fk_id_personnel_2 INT," & _
+   "fk_id_personnel_emetteur INT," & _
+   "date_message DATETIME," & _
+   "message TEXT," & _
+   "Id_personnel INT NOT NULL," & _
+   "PRIMARY KEY(Id_messages_privés)," & _
+   "FOREIGN KEY(Id_personnel) REFERENCES personnel(Id_personnel)" & _
+");"   
+
+DoCmd.RunSQL "CREATE TABLE messages_chat_public(" & _
+   "Id_messages_chat_public COUNTER," & _
+   "fk_id_personnel_auteur INT," & _
+   "date_message_public DATETIME," & _
+   "messages_public TEXT," & _
+   "Id_personnel INT NOT NULL," & _
+   "PRIMARY KEY(Id_messages_chat_public)," & _
+   "FOREIGN KEY(Id_personnel) REFERENCES personnel(Id_personnel)" & _
+");"   
+
+DoCmd.RunSQL "CREATE TABLE Catégorie_professionnelle(" & _
+   "Id_Catégorie_professionnelle COUNTER," & _
+   "metier VARCHAR(50)," & _
+   "PRIMARY KEY(Id_Catégorie_professionnelle)" & _
+");"   
+
+DoCmd.RunSQL "CREATE TABLE est_associé_à(" & _
+   "Id_personnel INT," & _
+   "Id_Catégorie_professionnelle INT," & _
+   "PRIMARY KEY(Id_personnel, Id_Catégorie_professionnelle)," & _
+   "FOREIGN KEY(Id_personnel) REFERENCES personnel(Id_personnel)," & _
+   "FOREIGN KEY(Id_Catégorie_professionnelle) REFERENCES Catégorie_professionnelle(Id_Catégorie_professionnelle)" & _
+");"   
+
+End Sub
